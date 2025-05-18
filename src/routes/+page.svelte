@@ -54,6 +54,18 @@
     /** @type {Array<Array<number>>} */
     let board = [[]];
 
+    // color coding for number squares
+    let colors = {
+        1: "darkgreen",
+        2: "darkgoldenrod",
+        3: "orangered",
+        4: "darkred",
+        5: "darkslateblue",
+        6: "darkcyan",
+        7: "darkmagenta",
+        8: "dimgrey",
+    };
+
     onMount(() => {
         board = createBoard(10, 10, 10, 0, 0);
     });
@@ -65,7 +77,7 @@
             {#each row as cell, x}
                 <td style:width="28px" style:text-align="center" style:border="1px solid grey">
                     {#if cell > 0}
-                        <b>{cell}</b>
+                        <b style:color={colors[cell]}>{cell}</b>
                     {:else if cell === -1}
                         M
                     {/if}
