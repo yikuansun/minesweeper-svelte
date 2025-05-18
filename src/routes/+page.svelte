@@ -108,13 +108,27 @@
     let currentTime = 0;
     let timerInterval = 0;
 
+    /** @type {HTMLDivElement} */
+    let gameDisplay;
+    let displayScale = 2;
+    function getDisplayScale() {
+        displayScale = Math.min(
+            window.innerWidth / gameDisplay.clientWidth,
+            window.innerHeight / gameDisplay.clientHeight,
+        );
+        displayScale -= 0.2; // pad a bit
+    }
+
     onMount(() => {
         board = createBoard(boardWidth, boardHeight, 0, 0, 0);
+        setTimeout(getDisplayScale, 1);
+        window.addEventListener("resize", getDisplayScale);
     });
 </script>
 
 <div style:position="fixed" style:top="50%" style:left="50%"
-    style:transform="translate(-50%, -50%) scale(2)" style:color="lightgrey">
+    style:transform="translate(-50%, -50%) scale({displayScale})" style:color="lightgrey"
+    bind:this={gameDisplay}>
     <table style:width="100%">
         <tr>
             <td style:text-align="left">
@@ -141,7 +155,7 @@
                                 {#if cell > 0}
                                     <b style:color={colors[cell]}>{cell}</b>
                                 {:else if cell === -1}
-                                    <i style:color="white">&#x2022;</i>
+                                    &#128165;
                                 {/if}
                             </div>
                             {#if !squaresUncovered.includes(`${x},${y}`)}
@@ -197,15 +211,16 @@
             </tr>
         {/each}
     </table>
-</div>
 {#if loser}
-    <div style:position="fixed" style:top="50%" style:left="50%"
-        style:transform="translate(-50%, -50%) scale(2)" style:background-color="#141414"
-        style:padding="10px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black"
-        transition:fade>
+    <div style:position="absolute" style:top="50%" style:left="50%"
+        style:transform="translate(-50%, -50%)" style:background-color="#141414"
+        style:padding="5px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black"
+        style:text-align="center"
+        transition:fade={{ delay: 500, duration: 500, }}>
         You suck at this game. Try again.
     </div>
 {/if}
+</div>
 
 <style>
     :global(body) {
