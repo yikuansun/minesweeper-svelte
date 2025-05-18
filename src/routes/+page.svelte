@@ -1,5 +1,21 @@
 <script>
     import { onMount } from 'svelte';
+    import { get } from 'svelte/store';
+
+    /**
+     * Get random cell that is not a mine (used to place mines)
+     * @param {Array<Array<number>>} board
+     * @returns {[number, number]} [x, y]
+     */
+    function getRandomSafeCell(board) {
+        let width = board[0].length;
+        let height = board.length;
+        let x = Math.floor(Math.random() * width);
+        let y = Math.floor(Math.random() * height);
+        // redo selection if cell is a mine
+        if (board[y][x] == -1) return getRandomSafeCell(board);
+        return [x, y];
+    }
 
     /**
      * Create array with minesweeper data
@@ -13,8 +29,7 @@
         for (let r = 0; r < height; r++) board.push(new Array(width).fill(0));
 
         for (let i = 0; i < mines; i++) {
-            let x = Math.floor(Math.random() * width);
-            let y = Math.floor(Math.random() * height);
+            let [x, y] = getRandomSafeCell(board);
             board[y][x] = -1;
             for (let r = y - 1; r <= y + 1; r++) {
                 if (r >= 0 && r < height) {
@@ -30,8 +45,6 @@
         return board;
     }
 
-    let boardWidth = 10;
-    let boardHeight = 10;
     /** @type {Array<Array<number>>} */
     let board = [[]];
 
