@@ -109,67 +109,81 @@
     });
 </script>
 
-<table style:border-collapse="collapse">
-    {#each board as row, y}
-        <tr style:height="28px">
-            {#each row as cell, x}
-                <td style:width="28px" style:height="28px" style:text-align="center" style:border="1px solid grey"
-                    style:background-color="black" style:box-sizing="border-box">
-                    <div style:position="relative" style:width="100%" style:height="100%">
-                        <div style:position="absolute" style:top="50%" style:left="50%" style:transform="translate(-50%, -50%)">
-                            {#if cell > 0}
-                                <b style:color={colors[cell]}>{cell}</b>
-                            {:else if cell === -1}
-                                <i style:color="white">&#x2022;</i>
+<div style:position="fixed" style:top="50%" style:left="50%"
+    style:transform="translate(-50%, -50%) scale(2)" style:color="lightgrey">
+    <span>&#x2691;</span>: {flags.length} / {numberOfMines}
+
+    <table style:border-collapse="collapse">
+        {#each board as row, y}
+            <tr style:height="28px">
+                {#each row as cell, x}
+                    <td style:width="28px" style:height="28px" style:text-align="center" style:border="1px solid grey"
+                        style:background-color="black" style:box-sizing="border-box">
+                        <div style:position="relative" style:width="100%" style:height="100%">
+                            <div style:position="absolute" style:top="50%" style:left="50%" style:transform="translate(-50%, -50%)">
+                                {#if cell > 0}
+                                    <b style:color={colors[cell]}>{cell}</b>
+                                {:else if cell === -1}
+                                    <i style:color="white">&#x2022;</i>
+                                {/if}
+                            </div>
+                            {#if !squaresUncovered.includes(`${x},${y}`)}
+                                <button style:display="block" style:width="100%" style:height="100%"
+                                    style:position="absolute" style:top="0" style:left="0"
+                                    on:click={() => {
+                                        if (loser) return; // can't play after losing
+                                        if (flags.includes(`${x},${y}`)) {
+                                            // don't allow clicking on flagged squares
+                                            return;
+                                        }
+                                        if (squaresUncovered.length === 0) {
+                                            // first click of the game
+                                            board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
+                                        }
+                                        squaresUncovered = [...squaresUncovered, `${x},${y}`];
+                                        if (board[y][x] === 0) {
+                                            // reveal whole patch of empty cells
+                                            revealEmptySquaresAround(x, y);
+                                        }
+                                        else if (board[y][x] === -1) {
+                                            loser = true;
+                                        }
+                                    }}
+                                    on:contextmenu={(e) => {
+                                        e.preventDefault();
+                                        if (loser) return; // can't play after losing
+                                        if (flags.includes(`${x},${y}`)) {
+                                            // remove flag
+                                            flags = flags.filter(flag => flag !== `${x},${y}`);
+                                        } else {
+                                            // add flag
+                                            flags = [...flags, `${x},${y}`];
+                                        }
+                                    }} transition:scale
+                                    disabled={loser} style:transition="background-color 1s, color 1s, border-color 1s">
+                                    {#if flags.includes(`${x},${y}`)}
+                                        <span style:display="inline-block" transition:scale={{ duration: 160, }}>&#x2691;</span>
+                                    {/if}
+                                </button>
                             {/if}
                         </div>
-                        {#if !squaresUncovered.includes(`${x},${y}`)}
-                            <button style:display="block" style:width="100%" style:height="100%"
-                                style:position="absolute" style:top="0" style:left="0"
-                                on:click={() => {
-                                    if (loser) return; // can't play after losing
-                                    if (flags.includes(`${x},${y}`)) {
-                                        // don't allow clicking on flagged squares
-                                        return;
-                                    }
-                                    if (squaresUncovered.length === 0) {
-                                        // first click of the game
-                                        board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
-                                    }
-                                    squaresUncovered = [...squaresUncovered, `${x},${y}`];
-                                    if (board[y][x] === 0) {
-                                        // reveal whole patch of empty cells
-                                        revealEmptySquaresAround(x, y);
-                                    }
-                                    else if (board[y][x] === -1) {
-                                        loser = true;
-                                    }
-                                }}
-                                on:contextmenu={(e) => {
-                                    e.preventDefault();
-                                    if (loser) return; // can't play after losing
-                                    if (flags.includes(`${x},${y}`)) {
-                                        // remove flag
-                                        flags = flags.filter(flag => flag !== `${x},${y}`);
-                                    } else {
-                                        // add flag
-                                        flags = [...flags, `${x},${y}`];
-                                    }
-                                }} transition:scale>
-                                {#if flags.includes(`${x},${y}`)}
-                                    <span style:display="inline-block" transition:scale={{ duration: 160, }}>&#x2691;</span>
-                                {/if}
-                            </button>
-                        {/if}
-                    </div>
-                </td>
-            {/each}
-        </tr>
-    {/each}
-</table>
-<span>&#x2691;</span>: {flags.length} / {numberOfMines}
+                    </td>
+                {/each}
+            </tr>
+        {/each}
+    </table>
+</div>
 {#if loser}
-    <p>
+    <div style:position="fixed" style:top="50%" style:left="50%"
+        style:transform="translate(-50%, -50%) scale(2)" style:background-color="#141414"
+        style:padding="10px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black">
         You suck at this game. Try again.
-    </p>
+    </div>
 {/if}
+
+<style>
+    :global(body) {
+        background-color: #141414;
+        user-select: none;
+    }
+</style>
