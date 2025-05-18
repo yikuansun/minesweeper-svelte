@@ -125,15 +125,15 @@
                             <button style:display="block" style:width="100%" style:height="100%"
                                 style:position="absolute" style:top="0" style:left="0"
                                 on:click={() => {
+                                    if (flags.includes(`${x},${y}`)) {
+                                        // don't allow clicking on flagged squares
+                                        return;
+                                    }
                                     if (squaresUncovered.length === 0) {
                                         // first click of the game
                                         board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
                                     }
                                     squaresUncovered = [...squaresUncovered, `${x},${y}`];
-                                    if (flags.includes(`${x},${y}`)) {
-                                        // remove flag
-                                        flags = flags.filter(flag => flag !== `${x},${y}`);
-                                    }
                                     if (board[y][x] === 0) {
                                         // reveal whole patch of empty cells
                                         revealEmptySquaresAround(x, y);
