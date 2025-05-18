@@ -98,9 +98,9 @@
         8: "grey",
     };
 
-    let boardWidth = 10;
-    let boardHeight = 10;
-    let numberOfMines = 20;
+    let boardWidth = 12;
+    let boardHeight = 12;
+    let numberOfMines = 42;
 
     let loser = false;
 
@@ -118,6 +118,8 @@
         );
         displayScale -= 0.2; // pad a bit
     }
+
+    let startScreenVisible = true;
 
     onMount(() => {
         board = createBoard(boardWidth, boardHeight, 0, 0, 0);
@@ -224,10 +226,84 @@
 {/if}
 </div>
 
+{#if startScreenVisible}
+    <div style:position="fixed" style:top="0" style:left="0" style:width="100vw" style:height="100vh"
+        style:background-color="#141414" style:z-index="100" transition:fade={{ delay: 200, duration: 500, }} style:color="white"
+        class="startScreen">
+        <div style:position="absolute" style:top="50%" style:left="50%" style:transform="translate(-50%, -50%)" style:text-align="center">
+            <b style:font-size="50px">Minesweeper</b>
+            <br /><br />
+            <b style:font-size="25px">Choose a game:</b>
+            <br /><br />
+            <button on:click={() => {
+                boardWidth = 10;
+                boardHeight = 10;
+                numberOfMines = 20;
+            }}>Beginner</button> <br />
+            <button on:click={() => {
+                boardWidth = 12;
+                boardHeight = 12;
+                numberOfMines = 42;
+            }}>Intermediate</button> <br />
+            <button on:click={() => {
+                boardWidth = 16;
+                boardHeight = 16;
+                numberOfMines = 64;
+            }}>Expert</button>
+            <br /><br />
+            <label>
+                Width:
+                <input type="number" bind:value={boardWidth} min="8" max="16" style:width="50px" />
+            </label> |
+            <label>
+                Height:
+                <input type="number" bind:value={boardHeight} min="8" max="16" style:width="50px" />
+            </label> |
+            <label>
+                Mines:
+                <input type="number" bind:value={numberOfMines} min="10" max={boardWidth * boardHeight - 9} style:width="50px" />
+            </label>
+            <br /><br />
+            <button style:font-size="24px" on:click={() => {
+                board = createBoard(boardWidth, boardHeight, numberOfMines, 0, 0);
+                setTimeout(getDisplayScale, 1);
+                startScreenVisible = false;
+            }}>Start Game</button>
+        </div>
+    </div>
+{/if}
+
 <style>
     :global(body) {
         background-color: #141414;
         user-select: none;
-        font-family:'Courier New', Courier, monospace
+        font-family:'Courier New', Courier, monospace;
+    }
+
+    .startScreen button {
+        background-color: grey;
+        color: darkred;
+        font-weight: bold;
+        border: 7px inset silver;
+        font-size: 16px;
+        padding: 10px 15px;
+        margin: 5px;
+        font-family:'Courier New', Courier, monospace;
+    }
+
+    .startScreen button:active {
+        border: 7px outset silver;
+        background-color: dimgrey;
+    }
+
+    .startScreen input {
+        background-color: #111111;
+        color: white;
+        border: 5px inset grey;
+        font-size: 16px;
+        padding: 7px 11px;
+        margin: 3px;
+        outline: none!important;
+        font-family:'Courier New', Courier, monospace;
     }
 </style>
