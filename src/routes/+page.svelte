@@ -199,7 +199,9 @@
                                             flags = [...flags, `${x},${y}`];
                                         }
                                     }} transition:scale
-                                    disabled={loser} style:transition="background-color 1s, color 1s, border-color 1s">
+                                    disabled={loser} style:transition="opacity 1s"
+                                    style:background-color="grey" style:color="darkred" style:border="3px inset silver"
+                                    style:opacity={loser ? 0.5 : 1}>
                                     {#if flags.includes(`${x},${y}`)}
                                         <span style:display="inline-block" transition:scale={{ duration: 160, }}>&#x2691;</span>
                                     {/if}
