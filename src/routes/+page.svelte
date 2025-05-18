@@ -102,8 +102,10 @@
     let boardHeight = 10;
     let numberOfMines = 20;
 
+    let loser = false;
+
     onMount(() => {
-        board = createBoard(boardWidth, boardHeight, numberOfMines, 0, 0);
+        board = createBoard(boardWidth, boardHeight, 0, 0, 0);
     });
 </script>
 
@@ -125,6 +127,7 @@
                             <button style:display="block" style:width="100%" style:height="100%"
                                 style:position="absolute" style:top="0" style:left="0"
                                 on:click={() => {
+                                    if (loser) return; // can't play after losing
                                     if (flags.includes(`${x},${y}`)) {
                                         // don't allow clicking on flagged squares
                                         return;
@@ -138,9 +141,13 @@
                                         // reveal whole patch of empty cells
                                         revealEmptySquaresAround(x, y);
                                     }
+                                    else if (board[y][x] === -1) {
+                                        loser = true;
+                                    }
                                 }}
                                 on:contextmenu={(e) => {
                                     e.preventDefault();
+                                    if (loser) return; // can't play after losing
                                     if (flags.includes(`${x},${y}`)) {
                                         // remove flag
                                         flags = flags.filter(flag => flag !== `${x},${y}`);
@@ -161,3 +168,8 @@
     {/each}
 </table>
 <span>&#x2691;</span>: {flags.length} / {numberOfMines}
+{#if loser}
+    <p>
+        You suck at this game. Try again.
+    </p>
+{/if}
