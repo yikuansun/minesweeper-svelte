@@ -133,9 +133,17 @@
                                 }}
                                 on:contextmenu={(e) => {
                                     e.preventDefault();
-                                    flags = [...flags, `${x},${y}`];
+                                    if (flags.includes(`${x},${y}`)) {
+                                        // remove flag
+                                        flags = flags.filter(flag => flag !== `${x},${y}`);
+                                    } else {
+                                        // add flag
+                                        flags = [...flags, `${x},${y}`];
+                                    }
                                 }} transition:scale>
-                                {#if flags.includes(`${x},${y}`)}f{/if}
+                                {#if flags.includes(`${x},${y}`)}
+                                    <span style:display="inline-block" transition:scale={{ duration: 160, }}>&#x2691;</span>
+                                {/if}
                             </button>
                         {/if}
                     </div>
@@ -144,3 +152,4 @@
         </tr>
     {/each}
 </table>
+<span>&#x2691;</span>: {flags.length} / {numberOfMines}
