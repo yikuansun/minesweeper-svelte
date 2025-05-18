@@ -104,6 +104,10 @@
 
     let loser = false;
 
+    let startTime = 0;
+    let currentTime = 0;
+    let timerInterval = 0;
+
     onMount(() => {
         board = createBoard(boardWidth, boardHeight, 0, 0, 0);
     });
@@ -117,7 +121,11 @@
                 <span>&#x2691;</span>: {flags.length} / {numberOfMines}
             </td>
             <td style:text-align="right">
-                0:00
+                {(new Date(currentTime - startTime)).getMinutes()}
+                :
+                {((new Date(currentTime - startTime)).getSeconds() + "").padStart(2, "0")}
+                .
+                {Math.floor((new Date(currentTime - startTime)).getMilliseconds() / 100)}
             </td>
         </tr>
     </table>
@@ -148,6 +156,12 @@
                                         if (squaresUncovered.length === 0) {
                                             // first click of the game
                                             board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
+                                            // start in-game timer
+                                            startTime = Date.now();
+                                            currentTime = startTime;
+                                            timerInterval = setInterval(() => {
+                                                currentTime = Date.now();
+                                            }, 100);
                                         }
                                         squaresUncovered = [...squaresUncovered, `${x},${y}`];
                                         if (board[y][x] === 0) {
@@ -155,7 +169,9 @@
                                             revealEmptySquaresAround(x, y);
                                         }
                                         else if (board[y][x] === -1) {
+                                            // hit a mine :(((
                                             loser = true;
+                                            clearInterval(timerInterval);
                                         }
                                     }}
                                     on:contextmenu={(e) => {
@@ -195,5 +211,6 @@
     :global(body) {
         background-color: #141414;
         user-select: none;
+        font-family:'Courier New', Courier, monospace
     }
 </style>
