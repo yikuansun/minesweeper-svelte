@@ -1,6 +1,5 @@
 <script>
     import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
 
     /**
      * Get random cell that is not a mine (used to place mines)
