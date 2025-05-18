@@ -54,6 +54,11 @@
     /** @type {Array<Array<number>>} */
     let board = [[]];
 
+    /** @type {Array<string>} */
+    let squaresUncovered = [];
+    /** @type {Array<string>} */
+    let flags = [];
+
     // color coding for number squares
     /** @type {Object<number, string>} */
     let colors = {
@@ -76,12 +81,29 @@
     {#each board as row, y}
         <tr style:height="28px">
             {#each row as cell, x}
-                <td style:width="28px" style:text-align="center" style:border="1px solid grey"
+                <td style:width="28px" style:height="28px" style:text-align="center" style:border="1px solid grey"
                     style:background-color="black" style:box-sizing="border-box">
-                    {#if cell > 0}
-                        <b style:color={colors[cell]}>{cell}</b>
-                    {:else if cell === -1}
-                        <i style:color="white">&#x2022;</i>
+                    {#if squaresUncovered.includes(`${x},${y}`)}
+                        {#if cell > 0}
+                            <b style:color={colors[cell]}>{cell}</b>
+                        {:else if cell === -1}
+                            <i style:color="white">&#x2022;</i>
+                        {/if}
+                    {:else}
+                        <button style:display="block" style:width="100%" style:height="100%"
+                            on:click={() => {
+                                if (squaresUncovered.length === 0) {
+                                    // first click of the game
+                                    board = createBoard(10, 10, 10, x, y);
+                                }
+                                squaresUncovered = [...squaresUncovered, `${x},${y}`];
+                            }}
+                            on:contextmenu={(e) => {
+                                e.preventDefault();
+                                flags = [...flags, `${x},${y}`];
+                            }}>
+                            {#if flags.includes(`${x},${y}`)}f{/if}
+                        </button>
                     {/if}
                 </td>
             {/each}
