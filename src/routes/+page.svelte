@@ -111,7 +111,16 @@
 
 <div style:position="fixed" style:top="50%" style:left="50%"
     style:transform="translate(-50%, -50%) scale(2)" style:color="lightgrey">
-    <span>&#x2691;</span>: {flags.length} / {numberOfMines}
+    <table style:width="100%">
+        <tr>
+            <td style:text-align="left">
+                <span>&#x2691;</span>: {flags.length} / {numberOfMines}
+            </td>
+            <td style:text-align="right">
+                0:00
+            </td>
+        </tr>
+    </table>
 
     <table style:border-collapse="collapse">
         {#each board as row, y}
@@ -176,7 +185,8 @@
 {#if loser}
     <div style:position="fixed" style:top="50%" style:left="50%"
         style:transform="translate(-50%, -50%) scale(2)" style:background-color="#141414"
-        style:padding="10px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black">
+        style:padding="10px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black"
+        transition:fade>
         You suck at this game. Try again.
     </div>
 {/if}
