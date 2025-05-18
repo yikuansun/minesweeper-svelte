@@ -55,6 +55,7 @@
     let board = [[]];
 
     // color coding for number squares
+    /** @type {Object<number, string>} */
     let colors = {
         1: "darkgreen",
         2: "darkgoldenrod",
@@ -63,7 +64,7 @@
         5: "darkslateblue",
         6: "darkcyan",
         7: "darkmagenta",
-        8: "dimgrey",
+        8: "grey",
     };
 
     onMount(() => {
@@ -75,11 +76,12 @@
     {#each board as row, y}
         <tr style:height="28px">
             {#each row as cell, x}
-                <td style:width="28px" style:text-align="center" style:border="1px solid grey">
+                <td style:width="28px" style:text-align="center" style:border="1px solid grey"
+                    style:background-color="black" style:box-sizing="border-box">
                     {#if cell > 0}
                         <b style:color={colors[cell]}>{cell}</b>
                     {:else if cell === -1}
-                        M
+                        <i style:color="white">&#x2022;</i>
                     {/if}
                 </td>
             {/each}
