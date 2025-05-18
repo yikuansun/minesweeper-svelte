@@ -58,6 +58,28 @@
     /** @type {Array<string>} */
     let flags = [];
 
+    /**
+     * Reveal whole patch of empty cells
+     * @param {number} x x-coordinate of the target square
+     * @param {number} y y-coordinate of the target square
+     */
+    function revealEmptySquaresAround(x, y) {
+        for (let r = y - 1; r <= y + 1; r++) {
+            if (r >= 0 && r < board.length) {
+                for (let c = x - 1; c <= x + 1; c++) {
+                    if (c >= 0 && c < board[0].length) {
+                        if (!squaresUncovered.includes(`${c},${r}`)) {
+                            squaresUncovered = [...squaresUncovered, `${c},${r}`];
+                            if (board[r][c] === 0) {
+                                revealEmptySquaresAround(c, r);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // color coding for number squares
     /** @type {Object<number, string>} */
     let colors = {
@@ -96,6 +118,10 @@
                                     board = createBoard(10, 10, 10, x, y);
                                 }
                                 squaresUncovered = [...squaresUncovered, `${x},${y}`];
+                                if (board[y][x] === 0) {
+                                    // reveal whole patch of empty cells
+                                    revealEmptySquaresAround(x, y);
+                                }
                             }}
                             on:contextmenu={(e) => {
                                 e.preventDefault();
