@@ -16,8 +16,8 @@
         let y = Math.floor(Math.random() * height);
         // redo selection if cell is a mine
         if (board[y][x] == -1) return getRandomSafeCell(board, startX, startY);
-        // first-clicked cell should also be a safe cell
-        if (startX == x && startY == y) return getRandomSafeCell(board, startX, startY);
+        // first-clicked cell (and cells around it) should also be safe cells
+        if (Math.abs(startX - x) <= 1 && Math.abs(startY - y) <= 1) return getRandomSafeCell(board, startX, startY);
         return [x, y];
     }
 
