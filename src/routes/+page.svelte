@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { fade, scale } from 'svelte/transition';
 
     /**
      * Get random cell that is not a mine (used to place mines)
@@ -108,32 +109,36 @@
             {#each row as cell, x}
                 <td style:width="28px" style:height="28px" style:text-align="center" style:border="1px solid grey"
                     style:background-color="black" style:box-sizing="border-box">
-                    {#if squaresUncovered.includes(`${x},${y}`)}
-                        {#if cell > 0}
-                            <b style:color={colors[cell]}>{cell}</b>
-                        {:else if cell === -1}
-                            <i style:color="white">&#x2022;</i>
+                    <div style:position="relative" style:width="100%" style:height="100%">
+                        <div style:position="absolute" style:top="50%" style:left="50%" style:transform="translate(-50%, -50%)">
+                            {#if cell > 0}
+                                <b style:color={colors[cell]}>{cell}</b>
+                            {:else if cell === -1}
+                                <i style:color="white">&#x2022;</i>
+                            {/if}
+                        </div>
+                        {#if !squaresUncovered.includes(`${x},${y}`)}
+                            <button style:display="block" style:width="100%" style:height="100%"
+                                style:position="absolute" style:top="0" style:left="0"
+                                on:click={() => {
+                                    if (squaresUncovered.length === 0) {
+                                        // first click of the game
+                                        board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
+                                    }
+                                    squaresUncovered = [...squaresUncovered, `${x},${y}`];
+                                    if (board[y][x] === 0) {
+                                        // reveal whole patch of empty cells
+                                        revealEmptySquaresAround(x, y);
+                                    }
+                                }}
+                                on:contextmenu={(e) => {
+                                    e.preventDefault();
+                                    flags = [...flags, `${x},${y}`];
+                                }} transition:scale>
+                                {#if flags.includes(`${x},${y}`)}f{/if}
+                            </button>
                         {/if}
-                    {:else}
-                        <button style:display="block" style:width="100%" style:height="100%"
-                            on:click={() => {
-                                if (squaresUncovered.length === 0) {
-                                    // first click of the game
-                                    board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
-                                }
-                                squaresUncovered = [...squaresUncovered, `${x},${y}`];
-                                if (board[y][x] === 0) {
-                                    // reveal whole patch of empty cells
-                                    revealEmptySquaresAround(x, y);
-                                }
-                            }}
-                            on:contextmenu={(e) => {
-                                e.preventDefault();
-                                flags = [...flags, `${x},${y}`];
-                            }}>
-                            {#if flags.includes(`${x},${y}`)}f{/if}
-                        </button>
-                    {/if}
+                    </div>
                 </td>
             {/each}
         </tr>
