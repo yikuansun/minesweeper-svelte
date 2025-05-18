@@ -103,6 +103,7 @@
     let numberOfMines = 42;
 
     let loser = false;
+    let winner = false;
 
     let startTime = 0;
     let currentTime = 0;
@@ -189,6 +190,11 @@
                                             loser = true;
                                             clearInterval(timerInterval);
                                         }
+                                        if (squaresUncovered.length >= (boardWidth * boardHeight - numberOfMines) && !loser) {
+                                            // win condition
+                                            winner = true;
+                                            clearInterval(timerInterval);
+                                        }
                                     }}
                                     on:contextmenu={(e) => {
                                         e.preventDefault();
@@ -222,6 +228,21 @@
         style:text-align="center"
         transition:fade={{ delay: 500, duration: 500, }}>
         You suck at this game. Try again.
+    </div>
+{/if}
+{#if winner}
+    <div style:position="absolute" style:top="50%" style:left="50%"
+        style:transform="translate(-50%, -50%)" style:background-color="#141414"
+        style:padding="5px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black"
+        style:text-align="center"
+        transition:fade={{ delay: 1000, duration: 500, }}>
+        You win! <br />
+        Final time: 
+        {(new Date(currentTime - startTime)).getMinutes()}
+        :
+        {((new Date(currentTime - startTime)).getSeconds() + "").padStart(2, "0")}
+        .
+        {Math.floor((new Date(currentTime - startTime)).getMilliseconds() / 100)}
     </div>
 {/if}
 </div>
