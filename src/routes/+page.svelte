@@ -71,6 +71,10 @@
                     if (c >= 0 && c < board[0].length) {
                         if (!squaresUncovered.includes(`${c},${r}`)) {
                             squaresUncovered = [...squaresUncovered, `${c},${r}`];
+                            if (flags.includes(`${c},${r}`)) {
+                                // remove flag
+                                flags = flags.filter(flag => flag !== `${c},${r}`);
+                            }
                             if (board[r][c] === 0) {
                                 revealEmptySquaresAround(c, r);
                             }
@@ -126,6 +130,10 @@
                                         board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
                                     }
                                     squaresUncovered = [...squaresUncovered, `${x},${y}`];
+                                    if (flags.includes(`${x},${y}`)) {
+                                        // remove flag
+                                        flags = flags.filter(flag => flag !== `${x},${y}`);
+                                    }
                                     if (board[y][x] === 0) {
                                         // reveal whole patch of empty cells
                                         revealEmptySquaresAround(x, y);
