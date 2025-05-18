@@ -93,8 +93,12 @@
         8: "grey",
     };
 
+    let boardWidth = 10;
+    let boardHeight = 10;
+    let numberOfMines = 20;
+
     onMount(() => {
-        board = createBoard(10, 10, 20, 0, 0);
+        board = createBoard(boardWidth, boardHeight, numberOfMines, 0, 0);
     });
 </script>
 
@@ -115,7 +119,7 @@
                             on:click={() => {
                                 if (squaresUncovered.length === 0) {
                                     // first click of the game
-                                    board = createBoard(10, 10, 20, x, y);
+                                    board = createBoard(boardWidth, boardHeight, numberOfMines, x, y);
                                 }
                                 squaresUncovered = [...squaresUncovered, `${x},${y}`];
                                 if (board[y][x] === 0) {
