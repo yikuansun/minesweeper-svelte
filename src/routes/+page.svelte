@@ -94,7 +94,7 @@
     };
 
     onMount(() => {
-        board = createBoard(10, 10, 10, 0, 0);
+        board = createBoard(10, 10, 20, 0, 0);
     });
 </script>
 
@@ -115,7 +115,7 @@
                             on:click={() => {
                                 if (squaresUncovered.length === 0) {
                                     // first click of the game
-                                    board = createBoard(10, 10, 10, x, y);
+                                    board = createBoard(10, 10, 20, x, y);
                                 }
                                 squaresUncovered = [...squaresUncovered, `${x},${y}`];
                                 if (board[y][x] === 0) {
