@@ -100,7 +100,7 @@
 
     let boardWidth = 12;
     let boardHeight = 12;
-    let numberOfMines = 42;
+    let numberOfMines = 24;
 
     let loser = false;
     let winner = false;
@@ -226,7 +226,7 @@
         style:transform="translate(-50%, -50%)" style:background-color="#141414"
         style:padding="5px" style:color="white" style:border-radius="5px" style:box-shadow="0 0 10px black"
         style:text-align="center"
-        transition:fade={{ delay: 500, duration: 500, }}>
+        transition:fade={{ delay: 1000, duration: 500, }}>
         You suck at this game. Try again.
     </div>
 {/if}
@@ -238,11 +238,7 @@
         transition:fade={{ delay: 1000, duration: 500, }}>
         You win! <br />
         Final time: 
-        {(new Date(currentTime - startTime)).getMinutes()}
-        :
-        {((new Date(currentTime - startTime)).getSeconds() + "").padStart(2, "0")}
-        .
-        {Math.floor((new Date(currentTime - startTime)).getMilliseconds() / 100)}
+        {(new Date(currentTime - startTime)).getMinutes()}:{((new Date(currentTime - startTime)).getSeconds() + "").padStart(2, "0")}.{Math.floor((new Date(currentTime - startTime)).getMilliseconds() / 100)}
     </div>
 {/if}
 </div>
@@ -257,19 +253,19 @@
             <b style:font-size="25px">Choose a game:</b>
             <br /><br />
             <button on:click={() => {
-                boardWidth = 10;
-                boardHeight = 10;
-                numberOfMines = 20;
+                boardWidth = 8;
+                boardHeight = 8;
+                numberOfMines = 10;
             }}>Beginner</button> <br />
             <button on:click={() => {
                 boardWidth = 12;
                 boardHeight = 12;
-                numberOfMines = 42;
+                numberOfMines = 24;
             }}>Intermediate</button> <br />
             <button on:click={() => {
                 boardWidth = 16;
                 boardHeight = 16;
-                numberOfMines = 64;
+                numberOfMines = 50;
             }}>Expert</button>
             <br /><br />
             <label>
