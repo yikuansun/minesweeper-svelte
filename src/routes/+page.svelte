@@ -5,15 +5,19 @@
     /**
      * Get random cell that is not a mine (used to place mines)
      * @param {Array<Array<number>>} board
+     * @param {number} startX x-coordinate of the first cell clicked
+     * @param {number} startY y-coordinate of the first cell clicked
      * @returns {[number, number]} [x, y]
      */
-    function getRandomSafeCell(board) {
+    function getRandomSafeCell(board, startX, startY) {
         let width = board[0].length;
         let height = board.length;
         let x = Math.floor(Math.random() * width);
         let y = Math.floor(Math.random() * height);
         // redo selection if cell is a mine
-        if (board[y][x] == -1) return getRandomSafeCell(board);
+        if (board[y][x] == -1) return getRandomSafeCell(board, startX, startY);
+        // first-clicked cell should also be a safe cell
+        if (startX == x && startY == y) return getRandomSafeCell(board, startX, startY);
         return [x, y];
     }
 
@@ -22,14 +26,16 @@
      * @param {number} width # of columns
      * @param {number} height # of rows
      * @param {number} mines # of mines
+     * @param {number} startX x-coordinate of the first cell clicked
+     * @param {number} startY y-coordinate of the first cell clicked
      * @returns {Array<Array<number>>} board
      */
-    function createBoard(width, height, mines) {
+    function createBoard(width, height, mines, startX, startY) {
         let board = [];
         for (let r = 0; r < height; r++) board.push(new Array(width).fill(0));
 
         for (let i = 0; i < mines; i++) {
-            let [x, y] = getRandomSafeCell(board);
+            let [x, y] = getRandomSafeCell(board, startX, startY);
             board[y][x] = -1;
             for (let r = y - 1; r <= y + 1; r++) {
                 if (r >= 0 && r < height) {
@@ -49,8 +55,7 @@
     let board = [[]];
 
     onMount(() => {
-        createBoard(10, 10, 10);
-        board = createBoard(10, 10, 10);
+        board = createBoard(10, 10, 10, 0, 0);
     });
 </script>
 
