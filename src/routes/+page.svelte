@@ -1,6 +1,20 @@
 <script>
     import { onMount } from 'svelte';
     import { fade, scale } from 'svelte/transition';
+    import clickSound from "$lib/sounds/click.wav";
+    import explodeSound from "$lib/sounds/explode.wav";
+    import winSound from "$lib/sounds/win.wav";
+    import squaresSound from "$lib/sounds/squares.wav";
+    import flagSound from "$lib/sounds/flag.wav";
+
+    /**
+     * Play sound effect
+     * @param {string} sound path of the sound file
+     */
+    function playSound(sound) {
+        let aud = new Audio(sound);
+        aud.play();
+    }
 
     /**
      * Get random cell that is not a mine (used to place mines)
@@ -181,6 +195,7 @@
                                             }, 100);
                                         }
                                         squaresUncovered = [...squaresUncovered, `${x},${y}`];
+                                        playSound(squaresSound);
                                         if (board[y][x] === 0) {
                                             // reveal whole patch of empty cells
                                             revealEmptySquaresAround(x, y);
@@ -189,11 +204,13 @@
                                             // hit a mine :(((
                                             loser = true;
                                             clearInterval(timerInterval);
+                                            playSound(explodeSound);
                                         }
                                         if (squaresUncovered.length >= (boardWidth * boardHeight - numberOfMines) && !loser) {
                                             // win condition
                                             winner = true;
                                             clearInterval(timerInterval);
+                                            playSound(winSound);
                                         }
                                     }}
                                     on:contextmenu={(e) => {
@@ -206,6 +223,7 @@
                                             // add flag
                                             flags = [...flags, `${x},${y}`];
                                         }
+                                        playSound(flagSound);
                                     }} transition:scale
                                     disabled={loser} style:transition="opacity 1s"
                                     style:background-color="grey" style:color="darkred" style:border="3px inset silver"
@@ -256,16 +274,19 @@
                 boardWidth = 8;
                 boardHeight = 8;
                 numberOfMines = 10;
+                playSound(clickSound);
             }}>Beginner</button> <br />
             <button on:click={() => {
                 boardWidth = 12;
                 boardHeight = 12;
                 numberOfMines = 24;
+                playSound(clickSound);
             }}>Intermediate</button> <br />
             <button on:click={() => {
                 boardWidth = 16;
                 boardHeight = 16;
                 numberOfMines = 50;
+                playSound(clickSound);
             }}>Expert</button>
             <br /><br />
             <label>
@@ -285,6 +306,7 @@
                 board = createBoard(boardWidth, boardHeight, numberOfMines, 0, 0);
                 setTimeout(getDisplayScale, 1);
                 startScreenVisible = false;
+                playSound(clickSound);
             }}>Start Game</button>
         </div>
     </div>
