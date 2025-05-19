@@ -353,3 +353,5 @@
     <meta name="description" content="A minesweeper game made with Svelte" />
     <meta name="keywords" content="minesweeper, svelte, game, html, css, javascript" />
 </svelte:head>
+
+<svelte:body on:contextmenu={e => e.preventDefault()} />
