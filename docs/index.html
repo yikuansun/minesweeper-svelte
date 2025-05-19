@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="./_app/immutable/assets/2.BeOq0ldp.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.CHZeLS4J.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/7Y_c4TZa.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/DpLuNE06.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.R6FAFQSs.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/B-xYwj7W.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.BG3l8P2n.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.ghYxEV1X.js"><title>Minesweeper</title><!-- HEAD_svelte-vwu57o_START --><meta name="author" content="Yikuan Sun"><meta name="description" content="A minesweeper game made with Svelte"><meta name="keywords" content="minesweeper, svelte, game, html, css, javascript"><!-- HEAD_svelte-vwu57o_END -->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(2); color: lightgrey;"><table style="width: 100%;"><tr><td style="text-align: left;"><span data-svelte-h="svelte-gzccjm">⚑</span>: 0 / 24</td> <td style="text-align: right;">0
+                :
+                00
+                .
+                0</td></tr></table> <table style="border-collapse: collapse;"><tr style="height: 28px;"> </tr></table>  </div> <div class="startScreen svelte-17ac7kk" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #141414; z-index: 100; color: white;"><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"><b style="font-size: 50px;" data-svelte-h="svelte-hibh2g">Minesweeper</b> <br><br> <b style="font-size: 25px;" data-svelte-h="svelte-1m9mhcc">Choose a game:</b> <br><br> <button class="svelte-17ac7kk" data-svelte-h="svelte-4yui2">Beginner</button> <br> <button class="svelte-17ac7kk" data-svelte-h="svelte-v1fpgo">Intermediate</button> <br> <button class="svelte-17ac7kk" data-svelte-h="svelte-dicgxm">Expert</button> <br><br> <label>Width:
+                <input type="number" min="8" max="16" class="svelte-17ac7kk" style="width: 50px;" value="12"></label> |
+            <label>Height:
+                <input type="number" min="8" max="16" class="svelte-17ac7kk" style="width: 50px;" value="12"></label> |
+            <label>Mines:
+                <input type="number" min="10" max="135" class="svelte-17ac7kk" style="width: 50px;" value="24"></label> <br><br> <button class="svelte-17ac7kk" style="font-size: 24px;" data-svelte-h="svelte-o9wa2q">Start Game</button></div></div>   
+			
+			<script>
+				{
+					__sveltekit_mnu7i6 = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("./_app/immutable/entry/start.CHZeLS4J.js"),
+						import("./_app/immutable/entry/app.R6FAFQSs.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

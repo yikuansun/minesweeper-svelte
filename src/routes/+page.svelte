@@ -346,3 +346,10 @@
         font-family:'Courier New', Courier, monospace;
     }
 </style>
+
+<svelte:head>
+    <title>Minesweeper</title>
+    <meta name="author" content="Yikuan Sun" />
+    <meta name="description" content="A minesweeper game made with Svelte" />
+    <meta name="keywords" content="minesweeper, svelte, game, html, css, javascript" />
+</svelte:head>
