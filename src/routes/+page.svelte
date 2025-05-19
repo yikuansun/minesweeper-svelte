@@ -165,9 +165,9 @@
         {#each board as row, y}
             <tr style:height="28px">
                 {#each row as cell, x}
-                    <td style:width="28px" style:height="28px" style:text-align="center" style:border="1px solid grey"
+                    <td style:text-align="center" style:border="1px solid grey"
                         style:background-color="black" style:box-sizing="border-box">
-                        <div style:position="relative" style:width="100%" style:height="100%">
+                        <div style:position="relative" style:width="25px" style:height="25px">
                             <div style:position="absolute" style:top="50%" style:left="50%" style:transform="translate(-50%, -50%)">
                                 {#if cell > 0}
                                     <b style:color={colors[cell]}>{cell}</b>
